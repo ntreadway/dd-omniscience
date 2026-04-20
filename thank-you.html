@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Received — DD-Omniscience</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; padding: 0; }
+
+    body {
+      background-color: #121212;
+      color: #E0E0E0;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* Animated checkmark */
+    @keyframes drawCheck {
+      from { stroke-dashoffset: 100; }
+      to   { stroke-dashoffset: 0; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .check-path {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: drawCheck 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .fade-up-1 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both; }
+    .fade-up-2 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both; }
+    .fade-up-3 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both; }
+    .fade-up-4 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both; }
+
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #D4AF37;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: transparent;
+      color: #D4AF37;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.5rem;
+      border: 1px solid #D4AF37;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+      text-decoration: none;
+    }
+
+    .cta-btn:hover {
+      background: #D4AF37;
+      color: #121212;
+    }
+
+    /* Pulse ring around check circle */
+    @keyframes pulseRing {
+      0%   { transform: scale(1); opacity: 0.3; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    .pulse-ring {
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 1px solid #D4AF37;
+      animation: pulseRing 2s ease-out 0.8s infinite;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Nav -->
+  <nav style="border-bottom:1px solid #2C2C2C; background:rgba(18,18,18,0.9); backdrop-filter:blur(12px); position:fixed; top:0; left:0; right:0; z-index:50;">
+    <div style="max-width:72rem; margin:0 auto; padding:1rem 1.5rem; display:flex; align-items:center; gap:0.75rem;">
+      <span style="display:block; width:20px; height:1px; background:#D4AF37;"></span>
+      <span style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#E0E0E0; font-family:'DM Sans',sans-serif; font-weight:500;">DD · Omniscience</span>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main style="flex:1; display:flex; align-items:center; justify-content:center; padding:6rem 1.5rem 4rem; position:relative; z-index:1;">
+    <div style="max-width:600px; width:100%; text-align:center;">
+
+      <!-- Animated check circle -->
+      <div style="display:flex; justify-content:center; margin-bottom:2.5rem;">
+        <div style="position:relative; width:72px; height:72px;">
+          <div class="pulse-ring"></div>
+          <div style="width:72px; height:72px; border-radius:50%; border:1px solid #2C2C2C; background:#1A1A1A; display:flex; align-items:center; justify-content:center;">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path class="check-path" d="M7 16.5L13 22.5L25 10" stroke="#D4AF37" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Label -->
+      <div class="section-label fade-up-1" style="margin-bottom:1.25rem;">Audit Request Received</div>
+
+      <!-- Heading -->
+      <h1 class="fade-up-2" style="font-family:'Playfair Display', serif; font-size:clamp(2.2rem, 6vw, 3.5rem); font-weight:500; line-height:1.1; letter-spacing:-0.02em; color:#E0E0E0; margin:0 0 1.5rem;">
+        We'll be in<br><em style="font-style:italic; color:#D4AF37;">touch shortly.</em>
+      </h1>
+
+      <!-- Body -->
+      <p class="fade-up-3" style="color:#9A9A9A; line-height:1.8; font-size:1rem; max-width:440px; margin:0 auto 2.5rem;">
+        Your workflow audit request has been logged. Expect a response within 24 hours — typically sooner. We'll review your current process before the call so the conversation is substantive from minute one.
+      </p>
+
+      <!-- Divider -->
+      <div class="fade-up-3" style="border-top:1px solid #2C2C2C; margin:0 auto 2.5rem; max-width:200px;"></div>
+
+      <!-- What to expect -->
+      <div class="fade-up-3" style="background:#1A1A1A; border:1px solid #2C2C2C; border-left:2px solid #D4AF37; padding:1.5rem 2rem; text-align:left; margin-bottom:2.5rem;">
+        <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#D4AF37; margin-bottom:1rem; font-weight:500; font-family:'DM Sans',sans-serif;">What Happens Next</div>
+        <div style="display:flex; flex-direction:column; gap:0.9rem;">
+          <div style="display:flex; gap:1rem; align-items:flex-start; font-size:0.875rem; color:#9A9A9A; line-height:1.6;">
+            <span style="color:#D4AF37; font-size:0.55rem; margin-top:6px; flex-shrink:0;">◆</span>
+            <span>We review your submission and map it against known OC broker DD failure patterns.</span>
+          </div>
+          <div style="display:flex; gap:1rem; align-items:flex-start; font-size:0.875rem; color:#9A9A9A; line-height:1.6;">
+            <span style="color:#D4AF37; font-size:0.55rem; margin-top:6px; flex-shrink:0;">◆</span>
+            <span>You receive a calendar link to book a 30-minute workflow audit call — no pitch, all substance.</span>
+          </div>
+          <div style="display:flex; gap:1rem; align-items:flex-start; font-size:0.875rem; color:#9A9A9A; line-height:1.6;">
+            <span style="color:#D4AF37; font-size:0.55rem; margin-top:6px; flex-shrink:0;">◆</span>
+            <span>If DD-Omniscience is a fit, we scope your custom integration and confirm a Q2 slot.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA back -->
+      <div class="fade-up-4">
+        <a href="https://ntreadway.github.io/dd-omniscience" class="cta-btn">← Return to Site</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="border-top:1px solid #2C2C2C; padding:1.5rem; position:relative; z-index:1;">
+    <div style="max-width:72rem; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+      <p style="font-size:0.7rem; color:#9A9A9A; letter-spacing:0.05em; margin:0;">© 2025 DD-Omniscience. Confidential & Proprietary.</p>
+      <p style="font-family:'Playfair Display', serif; font-size:1.5rem; color:#2C2C2C; margin:0; user-select:none;">916</p>
+    </div>
+  </footer>
+
+</body>
+</html>

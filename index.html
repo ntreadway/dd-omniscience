@@ -719,30 +719,39 @@
 
         <!-- Form -->
         <div class="reveal" style="animation-delay:0.15s;">
-          <div style="background:#1A1A1A; border:1px solid #2C2C2C; padding:2.5rem;">
+          <form
+            action="https://formspree.io/f/mpqkjwpe"
+            method="POST"
+            style="background:#1A1A1A; border:1px solid #2C2C2C; padding:2.5rem;"
+          >
+            <!-- Hidden redirect to thank-you page -->
+            <input type="hidden" name="_next" value="https://ntreadway.github.io/dd-omniscience/thank-you.html"/>
+            <!-- Honeypot spam filter -->
+            <input type="text" name="_gotcha" style="display:none"/>
+
             <div style="margin-bottom:1.5rem;">
               <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Full Name</label>
-              <input type="text" placeholder="James Whitmore" style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+              <input name="name" type="text" placeholder="James Whitmore" required style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
                 onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"/>
             </div>
             <div style="margin-bottom:1.5rem;">
               <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Brokerage / Firm</label>
-              <input type="text" placeholder="Whitmore Commercial Group" style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+              <input name="brokerage" type="text" placeholder="Whitmore Commercial Group" style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
                 onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"/>
             </div>
             <div style="margin-bottom:1.5rem;">
               <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Email Address</label>
-              <input type="email" placeholder="james@whitmore.com" style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+              <input name="email" type="email" placeholder="james@whitmore.com" required style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
                 onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"/>
             </div>
             <div style="margin-bottom:2rem;">
               <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Describe Your Current DD Process</label>
-              <textarea rows="4" placeholder="Walk us through how your team currently handles due diligence..." style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; resize:none; transition:border-color 0.2s;"
+              <textarea name="message" rows="4" placeholder="Walk us through how your team currently handles due diligence..." style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; resize:none; transition:border-color 0.2s;"
                 onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"></textarea>
             </div>
-            <button class="cta-btn" style="width:100%; text-align:center;">Submit Audit Request</button>
+            <button type="submit" class="cta-btn" style="width:100%; text-align:center; border:none; cursor:pointer;">Submit Audit Request</button>
             <p style="font-size:0.7rem; color:#9A9A9A; text-align:center; margin-top:1rem; letter-spacing:0.05em;">Response within 24 hours. Strictly confidential.</p>
-          </div>
+          </form>
         </div>
       </div>
     </div>
