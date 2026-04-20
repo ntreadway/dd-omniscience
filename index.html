@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DD-Omniscience — Zero-Error Due Diligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: '#121212',
+            'charcoal-mid': '#1A1A1A',
+            'charcoal-light': '#232323',
+            'charcoal-border': '#2C2C2C',
+            snow: '#E0E0E0',
+            'snow-dim': '#9A9A9A',
+            gold: '#D4AF37',
+            'gold-dim': '#A88C28',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { background: #121212; }
+
+    body {
+      background-color: #121212;
+      color: #E0E0E0;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── Grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ── Horizontal rule style ── */
+    .rule {
+      border: none;
+      border-top: 1px solid #2C2C2C;
+    }
+
+    /* ── Gold accent line ── */
+    .gold-line {
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: #D4AF37;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #D4AF37;
+    }
+
+    /* ── Hero headline ── */
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #E0E0E0;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: #D4AF37;
+    }
+
+    /* ── Section heading ── */
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      color: #E0E0E0;
+    }
+
+    /* ── CTA Button ── */
+    .cta-btn {
+      display: inline-block;
+      background: #D4AF37;
+      color: #121212;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s ease, transform 0.2s ease;
+      text-decoration: none;
+    }
+
+    .cta-btn:hover {
+      background: #c09e2e;
+      transform: translateY(-1px);
+    }
+
+    .cta-btn-ghost {
+      display: inline-block;
+      background: transparent;
+      color: #D4AF37;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.5rem;
+      border: 1px solid #D4AF37;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+      text-decoration: none;
+    }
+
+    .cta-btn-ghost:hover {
+      background: #D4AF37;
+      color: #121212;
+    }
+
+    /* ── Pillar card ── */
+    .pillar-card {
+      background: #1A1A1A;
+      border: 1px solid #2C2C2C;
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: border-color 0.3s ease;
+    }
+
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: #D4AF37;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .pillar-card:hover {
+      border-color: #D4AF37;
+    }
+
+    .pillar-card:hover::before {
+      opacity: 1;
+    }
+
+    .pillar-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 400;
+      color: #2C2C2C;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    /* ── Privacy block ── */
+    .privacy-block {
+      background: #1A1A1A;
+      border: 1px solid #2C2C2C;
+      border-left: 3px solid #D4AF37;
+    }
+
+    /* ── Offer block ── */
+    .offer-block {
+      background: linear-gradient(135deg, #1A1A1A 0%, #161616 100%);
+      border: 1px solid #2C2C2C;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-block::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .price-tag {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 500;
+      color: #D4AF37;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(18,18,18,0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #2C2C2C;
+    }
+
+    /* ── Divider numeral ── */
+    .divider-numeral {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: #2C2C2C;
+    }
+
+    /* ── Fade-in animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.25s; }
+    .fade-up-3 { animation-delay: 0.4s; }
+    .fade-up-4 { animation-delay: 0.55s; }
+
+    /* ── Scroll reveal (JS fallback is inline observer) ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Stat row ── */
+    .stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 400;
+      color: #D4AF37;
+      line-height: 1;
+    }
+
+    /* ── Problem list ── */
+    .problem-item {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid #2C2C2C;
+    }
+
+    .problem-item:last-child { border-bottom: none; }
+
+    .problem-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      margin-top: 2px;
+      color: #D4AF37;
+    }
+
+    /* Cursor crosshair on hero */
+    .hero-zone { cursor: crosshair; }
+  </style>
+</head>
+
+<body class="relative">
+
+  <!-- ══════════════════════════════════════
+       NAV
+  ══════════════════════════════════════ -->
+  <nav>
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="gold-line" style="width:20px;"></span>
+        <span class="section-label" style="color:#E0E0E0; letter-spacing:0.15em;">DD&nbsp;·&nbsp;Omniscience</span>
+      </div>
+      <a href="#contact" class="cta-btn" style="padding:0.65rem 1.75rem; font-size:0.65rem;">Request Audit</a>
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section class="hero-zone relative min-h-screen flex flex-col justify-center pt-24 pb-16 px-6">
+
+    <!-- Background grid lines -->
+    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;">
+      <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(44,44,44,0.5);"></div>
+      <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(44,44,44,0.3);"></div>
+    </div>
+
+    <div class="max-w-6xl mx-auto w-full relative z-10">
+      <div class="max-w-4xl">
+        <!-- Label -->
+        <div class="flex items-center gap-4 mb-10 fade-up fade-up-1">
+          <span class="gold-line"></span>
+          <span class="section-label">Newport Beach · Commercial Real Estate Intelligence</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="hero-headline fade-up fade-up-2 mb-8">
+          Zero-Error<br>
+          <em>Due Diligence.</em>
+        </h1>
+
+        <!-- Sub-headline -->
+        <p class="fade-up fade-up-3 mb-12" style="font-size:1.125rem; line-height:1.7; color:#9A9A9A; max-width:540px; font-weight:300;">
+          Protecting OC Commissions through Autonomous Intelligence. No fatigue. No oversights. No deal-killers slipping through.
+        </p>
+
+        <!-- CTA -->
+        <div class="fade-up fade-up-4 flex flex-wrap items-center gap-6">
+          <a href="#contact" class="cta-btn">Request a Workflow Audit</a>
+          <a href="#solution" style="font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:#9A9A9A; text-decoration:none; border-bottom:1px solid #2C2C2C; padding-bottom:2px; transition:color 0.2s, border-color 0.2s;"
+             onmouseover="this.style.color='#D4AF37';this.style.borderColor='#D4AF37';"
+             onmouseout="this.style.color='#9A9A9A';this.style.borderColor='#2C2C2C';">
+            See How It Works ↓
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="mt-24 grid grid-cols-3 gap-0 max-w-2xl reveal" style="border:1px solid #2C2C2C;">
+        <div class="p-6" style="border-right:1px solid #2C2C2C;">
+          <div class="stat-val">94%</div>
+          <div style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#9A9A9A; margin-top:0.5rem; font-weight:400;">Error Reduction</div>
+        </div>
+        <div class="p-6" style="border-right:1px solid #2C2C2C;">
+          <div class="stat-val">6–8×</div>
+          <div style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#9A9A9A; margin-top:0.5rem; font-weight:400;">Faster DD Cycles</div>
+        </div>
+        <div class="p-6">
+          <div class="stat-val">$0</div>
+          <div style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#9A9A9A; margin-top:0.5rem; font-weight:400;">Data Leaves Premises</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section divider numeral -->
+    <div class="absolute bottom-8 right-8 divider-numeral">01 / PREMISE</div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       THE PROBLEM — "The Human Ceiling"
+  ══════════════════════════════════════ -->
+  <section id="problem" style="border-top:1px solid #2C2C2C;" class="py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+        <!-- Left: Heading block -->
+        <div>
+          <span class="section-label block mb-6 reveal">The Problem</span>
+          <h2 class="section-heading reveal" style="animation-delay:0.1s;">
+            The Human<br><em style="font-style:italic; color:#D4AF37;">Ceiling.</em>
+          </h2>
+          <p class="mt-8 reveal" style="color:#9A9A9A; line-height:1.8; max-width:420px; animation-delay:0.2s;">
+            Manual due diligence is the hidden liability in every CRE deal. When a broker is managing multiple transactions, the human brain fatigues — and fatigued brains miss things that kill six-figure commissions.
+          </p>
+          <div class="mt-10 reveal" style="animation-delay:0.3s;">
+            <blockquote style="border-left:2px solid #D4AF37; padding-left:1.5rem; margin:0;">
+              <p style="font-family:'Playfair Display', serif; font-size:1.2rem; font-style:italic; color:#E0E0E0; line-height:1.6; font-weight:400;">
+                "The deal looked clean. It wasn't. A zoning overlay nobody caught cost me the commission."
+              </p>
+              <cite style="font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:#9A9A9A; margin-top:0.75rem; display:block; font-style:normal;">— Anonymous Newport Beach CRE Broker</cite>
+            </blockquote>
+          </div>
+        </div>
+
+        <!-- Right: Problem list -->
+        <div class="reveal" style="animation-delay:0.15s;">
+          <div class="problem-item">
+            <svg class="problem-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+            </svg>
+            <div>
+              <div style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; color:#D4AF37; margin-bottom:0.5rem; font-weight:500;">Fatigue-Driven Errors</div>
+              <div style="color:#9A9A9A; line-height:1.7; font-size:0.95rem;">
+                A broker reviewing a 400-page rent roll at hour eight of a workday is not operating at peak acuity. Critical anomalies — hidden lease clauses, rent abatements, tenant options — vanish in the noise.
+              </div>
+            </div>
+          </div>
+
+          <div class="problem-item">
+            <svg class="problem-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <div style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; color:#D4AF37; margin-bottom:0.5rem; font-weight:500;">Regulatory Lag</div>
+              <div style="color:#9A9A9A; line-height:1.7; font-size:0.95rem;">
+                Orange County municipal data — zoning amendments, environmental notices, permit histories — is fragmented across dozens of portals. No single human can monitor it all, in real time, across every active deal.
+              </div>
+            </div>
+          </div>
+
+          <div class="problem-item">
+            <svg class="problem-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
+            </svg>
+            <div>
+              <div style="font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; color:#D4AF37; margin-bottom:0.5rem; font-weight:500;">Compounding Deal Risk</div>
+              <div style="color:#9A9A9A; line-height:1.7; font-size:0.95rem;">
+                One overlooked environmental flag. One miscalculated cap rate. One unverified tenant estoppel. Any single error compounds — turning a clean close into a liability event, a renegotiation, or a dead deal.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-4 text-right divider-numeral">02 / PROBLEM</div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       THE SOLUTION
+  ══════════════════════════════════════ -->
+  <section id="solution" style="border-top:1px solid #2C2C2C; background:#141414;" class="py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="section-label block mb-6 reveal">The Solution</span>
+        <h2 class="section-heading reveal" style="animation-delay:0.1s;">DD&#8209;Omniscience.</h2>
+        <p class="mt-6 reveal" style="color:#9A9A9A; line-height:1.8; max-width:560px; margin-left:auto; margin-right:auto; animation-delay:0.2s;">
+          A purpose-built AI Agent that runs the full due diligence stack — continuously, simultaneously, without fatigue — so you never miss what matters.
+        </p>
+      </div>
+
+      <!-- 3-column pillars -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-0 reveal" style="border:1px solid #2C2C2C;">
+
+        <!-- Pillar 1 -->
+        <div class="pillar-card" style="border-right:1px solid #2C2C2C; border-bottom:none; border-left:none; border-top:none;">
+          <div class="pillar-number mb-6">01</div>
+          <div style="font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:#D4AF37; margin-bottom:1rem; font-weight:500;">Local Municipal Scraping</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size:1.4rem; font-weight:500; color:#E0E0E0; margin-bottom:1.25rem; line-height:1.25;">Regulatory Intelligence. Automated.</h3>
+          <p style="color:#9A9A9A; line-height:1.75; font-size:0.9rem;">
+            The agent continuously monitors Newport Beach, Irvine, Costa Mesa, and greater OC municipal portals — zoning amendments, variance hearings, permit histories, code violations — and flags any item that touches your active listings. No manual search. No missed update.
+          </p>
+          <ul style="margin-top:1.5rem; list-style:none; padding:0; display:flex; flex-direction:column; gap:0.6rem;">
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Zoning & overlay detection
+            </li>
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Permit & variance tracking
+            </li>
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Code enforcement alerts
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="pillar-card" style="border-right:1px solid #2C2C2C; border-bottom:none; border-left:1px solid #2C2C2C; border-top:none;">
+          <div class="pillar-number mb-6">02</div>
+          <div style="font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:#D4AF37; margin-bottom:1rem; font-weight:500;">Environmental Red-Flagging</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size:1.4rem; font-weight:500; color:#E0E0E0; margin-bottom:1.25rem; line-height:1.25;">Contamination Risks. Surfaced First.</h3>
+          <p style="color:#9A9A9A; line-height:1.75; font-size:0.9rem;">
+            The agent cross-references DTSC databases, USGS hazard maps, EPA brownfield records, and Phase I environmental summaries against each property — delivering a risk-tiered report before it becomes your client's problem, or your liability.
+          </p>
+          <ul style="margin-top:1.5rem; list-style:none; padding:0; display:flex; flex-direction:column; gap:0.6rem;">
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Hazmat & brownfield mapping
+            </li>
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Phase I summary correlation
+            </li>
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Risk-tiered flag reporting
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="pillar-card" style="border:none;">
+          <div class="pillar-number mb-6">03</div>
+          <div style="font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:#D4AF37; margin-bottom:1rem; font-weight:500;">Lease / Rent Roll Integrity</div>
+          <h3 style="font-family:'Playfair Display', serif; font-size:1.4rem; font-weight:500; color:#E0E0E0; margin-bottom:1.25rem; line-height:1.25;">Every Line. Every Clause. Verified.</h3>
+          <p style="color:#9A9A9A; line-height:1.75; font-size:0.9rem;">
+            The agent ingests rent rolls and lease abstracts, then cross-validates every income line — verifying tenant estoppels, surfacing hidden abatements, flagging co-tenancy clauses, and confirming CAM reconciliations with mathematical precision no human can sustain at scale.
+          </p>
+          <ul style="margin-top:1.5rem; list-style:none; padding:0; display:flex; flex-direction:column; gap:0.6rem;">
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Estoppel & SNDA verification
+            </li>
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> Abatement & option detection
+            </li>
+            <li style="font-size:0.8rem; color:#9A9A9A; display:flex; gap:0.75rem; align-items:center;">
+              <span style="color:#D4AF37; font-size:0.6rem;">◆</span> CAM & NOI reconciliation
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-8 text-right divider-numeral">03 / SYSTEM</div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       PRIVACY EDGE
+  ══════════════════════════════════════ -->
+  <section id="privacy" style="border-top:1px solid #2C2C2C;" class="py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+
+        <!-- Hardware visual block -->
+        <div class="reveal" style="animation-delay:0.05s;">
+          <div style="background:#1A1A1A; border:1px solid #2C2C2C; padding:3rem; position:relative; overflow:hidden;">
+            <!-- Decorative circuit lines -->
+            <div style="position:absolute;top:0;right:0;width:120px;height:120px;overflow:hidden;opacity:0.15;">
+              <svg viewBox="0 0 120 120" fill="none" stroke="#D4AF37" stroke-width="1">
+                <line x1="0" y1="60" x2="60" y2="60"/>
+                <line x1="60" y1="60" x2="60" y2="0"/>
+                <circle cx="60" cy="60" r="4" fill="#D4AF37" stroke="none"/>
+                <line x1="60" y1="60" x2="120" y2="60"/>
+                <line x1="90" y1="60" x2="90" y2="120"/>
+                <circle cx="90" cy="60" r="3" fill="none" stroke="#D4AF37"/>
+              </svg>
+            </div>
+
+            <div style="font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:#D4AF37; margin-bottom:2rem; font-weight:500;">Hardware Specification</div>
+
+            <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:2rem;">
+              <!-- Mac Mini icon -->
+              <div style="width:64px; height:48px; background:#232323; border:1px solid #3C3C3C; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg width="32" height="22" viewBox="0 0 32 22" fill="none">
+                  <rect x="4" y="2" width="24" height="16" rx="2" fill="#2C2C2C" stroke="#4C4C4C" stroke-width="1"/>
+                  <rect x="0" y="18" width="32" height="4" rx="1" fill="#2C2C2C" stroke="#4C4C4C" stroke-width="1"/>
+                  <circle cx="16" cy="20" r="1" fill="#D4AF37"/>
+                </svg>
+              </div>
+              <div>
+                <div style="font-family:'Playfair Display', serif; font-size:1.5rem; color:#E0E0E0; font-weight:500;">Mac Mini M4 Pro</div>
+                <div style="font-size:0.8rem; color:#9A9A9A; margin-top:0.2rem;">On-Premises · Air-Gapped Capable</div>
+              </div>
+            </div>
+
+            <hr class="rule" style="margin-bottom:1.5rem;">
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div>
+                <div style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.3rem;">Compute</div>
+                <div style="font-size:0.9rem; color:#E0E0E0;">M4 Pro · 24-Core GPU</div>
+              </div>
+              <div>
+                <div style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.3rem;">Memory</div>
+                <div style="font-size:0.9rem; color:#E0E0E0;">48 GB Unified</div>
+              </div>
+              <div>
+                <div style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.3rem;">Storage</div>
+                <div style="font-size:0.9rem; color:#E0E0E0;">1–2 TB NVMe SSD</div>
+              </div>
+              <div>
+                <div style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.3rem;">Egress</div>
+                <div style="font-size:0.9rem; color:#D4AF37; font-weight:500;">Zero · By Design</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Copy -->
+        <div>
+          <span class="section-label block mb-6 reveal">The Privacy Edge</span>
+          <h2 class="section-heading reveal" style="animation-delay:0.1s;">Your data never<br><em style="font-style:italic; color:#D4AF37;">leaves the room.</em></h2>
+          <p class="mt-8 reveal" style="color:#9A9A9A; line-height:1.8; animation-delay:0.2s;">
+            Unlike cloud-based AI tools — where your client data, deal terms, and financial models are processed on third-party servers — DD-Omniscience runs entirely on local hardware installed in your office.
+          </p>
+          <p class="mt-4 reveal" style="color:#9A9A9A; line-height:1.8; animation-delay:0.25s;">
+            Your confidential lease abstracts, rent rolls, and client portfolios are processed by a model running on your own machine. No API calls to OpenAI. No data stored on Azure. No GDPR exposure. No broker-client privilege questions.
+          </p>
+
+          <div class="mt-10 reveal" style="animation-delay:0.3s;">
+            <div class="privacy-block p-6" style="display:flex; gap:1.25rem; align-items:flex-start;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5" style="flex-shrink:0; margin-top:2px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+              </svg>
+              <div>
+                <div style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:#D4AF37; margin-bottom:0.4rem; font-weight:500;">Compliance-Ready</div>
+                <div style="font-size:0.9rem; color:#9A9A9A; line-height:1.6;">Architecture is designed from the ground up for environments where data sovereignty is non-negotiable. Air-gap configuration available on request.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-4 text-right divider-numeral">04 / SOVEREIGNTY</div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       THE OFFER
+  ══════════════════════════════════════ -->
+  <section id="offer" style="border-top:1px solid #2C2C2C; background:#141414;" class="py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="offer-block p-12 md:p-16 reveal">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+          <!-- Left -->
+          <div>
+            <span class="section-label block mb-6">The Offer</span>
+            <h2 class="section-heading mb-6">Built for the<br><em style="font-style:italic; color:#D4AF37;">Architect,</em><br>not the Admin.</h2>
+            <p style="color:#9A9A9A; line-height:1.8; margin-bottom:1.5rem; font-size:0.95rem;">
+              This is not a SaaS subscription. It is a bespoke, custom-integrated AI system — engineered to your specific deal flow, your municipal jurisdictions, and your document formats.
+            </p>
+            <p style="color:#9A9A9A; line-height:1.8; font-size:0.95rem;">
+              We install the hardware, configure the agents, train the models on your historical deal data, and hand you a system that makes you untouchable in the OC market.
+            </p>
+
+            <div style="margin-top:2.5rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <div style="display:flex; gap:1rem; align-items:center; font-size:0.9rem; color:#9A9A9A;">
+                <span style="color:#D4AF37; font-size:0.55rem;">◆</span> Custom agent configuration for your workflow
+              </div>
+              <div style="display:flex; gap:1rem; align-items:center; font-size:0.9rem; color:#9A9A9A;">
+                <span style="color:#D4AF37; font-size:0.55rem;">◆</span> On-site hardware installation & setup
+              </div>
+              <div style="display:flex; gap:1rem; align-items:center; font-size:0.9rem; color:#9A9A9A;">
+                <span style="color:#D4AF37; font-size:0.55rem;">◆</span> 60-day integration & calibration period
+              </div>
+              <div style="display:flex; gap:1rem; align-items:center; font-size:0.9rem; color:#9A9A9A;">
+                <span style="color:#D4AF37; font-size:0.55rem;">◆</span> Priority support channel (direct line)
+              </div>
+              <div style="display:flex; gap:1rem; align-items:center; font-size:0.9rem; color:#9A9A9A;">
+                <span style="color:#D4AF37; font-size:0.55rem;">◆</span> Quarterly model refresh & retraining
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Price block -->
+          <div style="display:flex; flex-direction:column; gap:2rem;">
+            <div>
+              <div style="font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:#9A9A9A; margin-bottom:1rem;">Custom Integration Investment</div>
+              <div class="price-tag">$10,000</div>
+              <div style="font-size:0.8rem; color:#9A9A9A; margin-top:0.75rem;">One-time · All-inclusive · No recurring SaaS fees</div>
+            </div>
+
+            <hr class="rule">
+
+            <div style="background:#121212; border:1px solid #2C2C2C; padding:1.5rem;">
+              <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#D4AF37; margin-bottom:1rem; font-weight:500;">ROI Context</div>
+              <p style="font-size:0.9rem; color:#9A9A9A; line-height:1.7;">
+                A single preserved commission on a $5M+ transaction exceeds the integration investment by 10–20×. One deal saved. One risk avoided. The system pays for itself.
+              </p>
+            </div>
+
+            <div style="padding:1.5rem; border:1px solid #D4AF37; background:rgba(212,175,55,0.03);">
+              <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#D4AF37; margin-bottom:0.5rem; font-weight:500;">Availability</div>
+              <p style="font-size:0.9rem; color:#9A9A9A; line-height:1.7; margin-bottom:1.25rem;">
+                Intake is limited to <strong style="color:#E0E0E0;">3 brokerages per quarter</strong> to ensure full integration fidelity. Current Q2 2025 slots are nearly filled.
+              </p>
+              <a href="#contact" class="cta-btn" style="display:block; text-align:center;">Reserve Your Integration Slot</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-4 text-right divider-numeral">05 / OFFER</div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       CONTACT / CTA
+  ══════════════════════════════════════ -->
+  <section id="contact" style="border-top:1px solid #2C2C2C;" class="py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+        <div>
+          <span class="section-label block mb-6 reveal">Start Here</span>
+          <h2 class="section-heading reveal" style="animation-delay:0.1s; max-width:480px;">Request a<br><em style="font-style:italic; color:#D4AF37;">Workflow Audit.</em></h2>
+          <p class="mt-8 reveal" style="color:#9A9A9A; line-height:1.8; max-width:420px; animation-delay:0.2s;">
+            A 30-minute call. We map your current due diligence process, identify your highest-risk failure points, and show you exactly where DD-Omniscience eliminates exposure.
+          </p>
+          <p class="mt-4 reveal" style="color:#9A9A9A; line-height:1.8; max-width:420px; animation-delay:0.25s;">
+            No pitch deck. No obligation. Just clarity on whether this is built for your operation.
+          </p>
+
+          <div class="mt-12 reveal" style="animation-delay:0.3s; display:flex; flex-direction:column; gap:1.25rem;">
+            <div style="display:flex; gap:1rem; align-items:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+              </svg>
+              <a href="mailto:contact@ddomniscience.ai" style="color:#9A9A9A; text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#9A9A9A'">contact@ddomniscience.ai</a>
+            </div>
+            <div style="display:flex; gap:1rem; align-items:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+              </svg>
+              <a href="tel:9165550000" style="color:#9A9A9A; text-decoration:none; font-size:0.9rem;" onmouseover="this.style.color='#D4AF37'" onmouseout="this.style.color='#9A9A9A'">(916) 555-0000</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="reveal" style="animation-delay:0.15s;">
+          <div style="background:#1A1A1A; border:1px solid #2C2C2C; padding:2.5rem;">
+            <div style="margin-bottom:1.5rem;">
+              <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Full Name</label>
+              <input type="text" placeholder="James Whitmore" style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"/>
+            </div>
+            <div style="margin-bottom:1.5rem;">
+              <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Brokerage / Firm</label>
+              <input type="text" placeholder="Whitmore Commercial Group" style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"/>
+            </div>
+            <div style="margin-bottom:1.5rem;">
+              <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Email Address</label>
+              <input type="email" placeholder="james@whitmore.com" style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"/>
+            </div>
+            <div style="margin-bottom:2rem;">
+              <label style="display:block; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-bottom:0.6rem; font-weight:500;">Describe Your Current DD Process</label>
+              <textarea rows="4" placeholder="Walk us through how your team currently handles due diligence..." style="width:100%; background:#121212; border:1px solid #2C2C2C; color:#E0E0E0; padding:0.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; resize:none; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#D4AF37'" onblur="this.style.borderColor='#2C2C2C'"></textarea>
+            </div>
+            <button class="cta-btn" style="width:100%; text-align:center;">Submit Audit Request</button>
+            <p style="font-size:0.7rem; color:#9A9A9A; text-align:center; margin-top:1rem; letter-spacing:0.05em;">Response within 24 hours. Strictly confidential.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer style="border-top:1px solid #2C2C2C; background:#0E0E0E;" class="py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+        <!-- Brand -->
+        <div>
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+            <span style="display:block; width:20px; height:1px; background:#D4AF37;"></span>
+            <span style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#E0E0E0;">DD · Omniscience</span>
+          </div>
+          <p style="font-size:0.8rem; color:#9A9A9A; line-height:1.7; max-width:240px;">
+            AI Due Diligence Infrastructure for Commercial Real Estate — Orange County, CA.
+          </p>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#D4AF37; margin-bottom:1rem; font-weight:500;">Contact</div>
+          <div style="font-size:0.85rem; color:#9A9A9A; line-height:2;">
+            contact@ddomniscience.ai<br>
+            (916) 555-0000<br>
+            Newport Beach, CA 92660
+          </div>
+        </div>
+
+        <!-- Signature -->
+        <div style="text-align:right;">
+          <div style="font-family:'Playfair Display', serif; font-size:4rem; color:#2C2C2C; font-weight:400; line-height:1; user-select:none;">916</div>
+          <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9A9A9A; margin-top:0.5rem;">Designed for Principals</div>
+        </div>
+      </div>
+
+      <hr class="rule" style="margin:2.5rem 0;">
+
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem;">
+        <p style="font-size:0.7rem; color:#9A9A9A; letter-spacing:0.05em;">© 2025 DD-Omniscience. All rights reserved. Confidential & Proprietary.</p>
+        <p style="font-size:0.7rem; color:#2C2C2C; letter-spacing:0.1em;">ZERO-ERROR · ZERO-EGRESS · ZERO-COMPROMISE</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ══════════════════════════════════════
+       SCROLL REVEAL SCRIPT
+  ══════════════════════════════════════ -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
